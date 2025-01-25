@@ -4,56 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Solar System Map</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-
-        h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .tooltip {
-            position: absolute;
-            background-color: #333;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        img {
-            display: block;
-            margin: 0 auto;
-            max-width: 90%;
-            height: auto;
-        }
-
-        .highlight {
-            border: 2px solid yellow;
-            border-radius: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Interactive Solar System Map</h1>
     <p>Hover over the Sun or a planet to see its name. Click to learn more about it!</p>
 
-    <div id="container" style="position: relative; display: inline-block;">
-        <!-- Tooltip for interactivity -->
-        <div class="tooltip" id="tooltip"></div>
+    <!-- Container for image and tooltip -->
+    <div id="image-container" style="position: relative;">
+        <!-- Tooltip -->
+        <div id="tooltip" class="tooltip"></div>
 
         <!-- Solar system image -->
-        <img src="solarsystem.jpg" alt="Solar System" usemap="#solarsystem-map" id="solar-system-image">
+        <img src="solarsystem.jpg" alt="Solar System" usemap="#solar-system-map" id="solar-system-image">
 
         <!-- Image map -->
-        <map name="solarsystem-map">
+        <map name="solar-system-map">
             <!-- Sun -->
             <area shape="rect" coords="100,100,200,200" href="sun.htm" alt="Sun" data-name="Sun">
 
@@ -74,42 +40,9 @@
         </map>
     </div>
 
-    <script>
-        // Tooltip setup
-        const tooltip = document.getElementById('tooltip');
-        const image = document.getElementById('solar-system-image');
-
-        // Add interactivity to map areas
-        document.querySelectorAll('area').forEach(area => {
-            area.addEventListener('mouseover', event => {
-                const name = event.target.dataset.name;
-                const coords = event.target.coords.split(',').map(Number);
-                const shape = event.target.shape;
-
-                // Adjust tooltip position
-                let x, y;
-                if (shape === 'circle') {
-                    [x, y] = coords;
-                } else if (shape === 'rect') {
-                    x = (coords[0] + coords[2]) / 2;
-                    y = coords[1];
-                }
-                const rect = image.getBoundingClientRect();
-                tooltip.style.left = rect.left + x + 'px';
-                tooltip.style.top = rect.top + y - 30 + 'px';
-
-                // Show tooltip
-                tooltip.textContent = name;
-                tooltip.style.visibility = 'visible';
-                tooltip.style.opacity = '1';
-            });
-
-            area.addEventListener('mouseout', () => {
-                tooltip.style.visibility = 'hidden';
-                tooltip.style.opacity = '0';
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
+
+
 
