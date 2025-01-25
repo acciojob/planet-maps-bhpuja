@@ -1,16 +1,115 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Solar System Map</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 90%;
+            height: auto;
+        }
+
+        .highlight {
+            border: 2px solid yellow;
+            border-radius: 50%;
+        }
+    </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+    <h1>Interactive Solar System Map</h1>
+    <p>Hover over the Sun or a planet to see its name. Click to learn more about it!</p>
 
+    <div id="container" style="position: relative; display: inline-block;">
+        <!-- Tooltip for interactivity -->
+        <div class="tooltip" id="tooltip"></div>
+
+        <!-- Solar system image -->
+        <img src="solarsystem.jpg" alt="Solar System" usemap="#solarsystem-map" id="solar-system-image">
+
+        <!-- Image map -->
+        <map name="solarsystem-map">
+            <!-- Sun -->
+            <area shape="rect" coords="100,100,200,200" href="sun.htm" alt="Sun" data-name="Sun">
+
+            <!-- Planets -->
+            <area shape="circle" coords="300,150,20" href="mercury.htm" alt="Mercury" data-name="Mercury">
+            <area shape="circle" coords="350,150,25" href="venus.htm" alt="Venus" data-name="Venus">
+            <area shape="circle" coords="400,150,30" href="earth.htm" alt="Earth" data-name="Earth">
+            <area shape="circle" coords="450,150,25" href="mars.htm" alt="Mars" data-name="Mars">
+            <area shape="circle" coords="500,150,40" href="jupiter.htm" alt="Jupiter" data-name="Jupiter">
+            <area shape="circle" coords="600,150,35" href="saturn.htm" alt="Saturn" data-name="Saturn">
+            <area shape="circle" coords="700,150,30" href="uranus.htm" alt="Uranus" data-name="Uranus">
+            <area shape="circle" coords="750,150,25" href="neptune.htm" alt="Neptune" data-name="Neptune">
+
+            <!-- Dwarf Planets -->
+            <area shape="circle" coords="250,250,15" href="pluto.htm" alt="Pluto" data-name="Pluto">
+            <area shape="circle" coords="300,250,15" href="ceres.htm" alt="Ceres" data-name="Ceres">
+            <area shape="circle" coords="350,250,15" href="eris.htm" alt="Eris" data-name="Eris">
+        </map>
+    </div>
+
+    <script>
+        // Tooltip setup
+        const tooltip = document.getElementById('tooltip');
+        const image = document.getElementById('solar-system-image');
+
+        // Add interactivity to map areas
+        document.querySelectorAll('area').forEach(area => {
+            area.addEventListener('mouseover', event => {
+                const name = event.target.dataset.name;
+                const coords = event.target.coords.split(',').map(Number);
+                const shape = event.target.shape;
+
+                // Adjust tooltip position
+                let x, y;
+                if (shape === 'circle') {
+                    [x, y] = coords;
+                } else if (shape === 'rect') {
+                    x = (coords[0] + coords[2]) / 2;
+                    y = coords[1];
+                }
+                const rect = image.getBoundingClientRect();
+                tooltip.style.left = rect.left + x + 'px';
+                tooltip.style.top = rect.top + y - 30 + 'px';
+
+                // Show tooltip
+                tooltip.textContent = name;
+                tooltip.style.visibility = 'visible';
+                tooltip.style.opacity = '1';
+            });
+
+            area.addEventListener('mouseout', () => {
+                tooltip.style.visibility = 'hidden';
+                tooltip.style.opacity = '0';
+            });
+        });
+    </script>
 </body>
-
 </html>
+
