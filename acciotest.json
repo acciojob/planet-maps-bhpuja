@@ -1,0 +1,4 @@
+{
+    "testRepo": "planet-maps-solution",
+    "pathToFile": "cypress/integration/tests/test.spec.js"
+}
